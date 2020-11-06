@@ -1,256 +1,351 @@
-#include<iostream>
-#include<cstdio>
-#include<cstdlib>
+#include <iostream>
 using namespace std;
+template <typename X>
 
-struct node
+class linkedlist
+{   struct node
 {
-    int info;
-    struct node *next;
-}*last;
- 
-class circular_llist
-{
-    public:
-    	void reverse();
-    	void search(int ele);
-        void add_end(int value);
-        void add_begin(int value);
-        void add_after(int value, int position);
-        void delete_element(int value);
-        void display_list();
-		circular_llist()
-        {
-            last = NULL;           
-        }
+  public: X data;
+          node* next;
 };
- 
+    private: 
+             node* tail;
+    public:
+    X n,n1,n2,n3,n4;
+    int pos;
+    linkedlist()
+    {
+     tail=NULL;
+    }
+    ~linkedlist()
+    {   node* ptr=new node();
+        node* temp=new node();
+        if (!isempty())
+		{  
+			cout << "\nDeallocating memory...\n";
+			ptr = tail->next;
+			tail->next = NULL;
+			while (ptr != NULL)
+			{
+				temp = ptr->next;
+				delete ptr;
+				ptr = temp;
+			}
+		}
+    }
+             void append()
+             {  cout<<"enter data "<<endl;
+                cin>>n;
+                node* temp=new node;
+                temp->data=n;
+                if(tail==NULL)
+                {
+                    tail=temp;
+                    tail->next=tail;
+                }
+                else
+                {
+                    temp->next=tail->next;
+                    tail->next=temp;
+                    tail=temp;
+                }
+             }
+             void append_in_begin()
+             {   cout<<"enter data to insert at begining"<<endl;
+                 cin>>n1;
+                 node* temp=new node;
+                 temp->data=n1;
+                 if(tail==NULL)
+                 {
+                     tail=temp;
+                     tail->next=tail;
+                 }
+                 else
+                 {
+                     temp->next=tail->next;
+                     tail->next=temp;
+                 }
+             }
+             void append_in_pos()
+             {  cout<<"enter the position where you want to insert the data"<<endl;
+                cin>>pos;
+                
+                 
+                 if(pos==1)
+                 {
+                     append_in_begin();
+                 }
+                 else
+                 if(pos==no_of_data()+1)
+                 {
+                     append();
+                 }
+                 else
+                 {   cout<<"enter the data you want to insert"<<endl;
+                     cin>>n2;
+                     node* temp=new node;
+                     temp->data=n2;
+                     node* ptr=new node;
+                     ptr=tail->next;
+                     int count=1;
+                     while(count<pos-1)
+                     {
+                         ptr=ptr->next;
+                         count++;
+                     }
+                     temp->next=ptr->next;
+                     ptr->next=temp;
+                 }
+             }
+             int no_of_data()
+             {   if(tail==NULL)
+             {
+                 return 0;
+             }
+             else
+             {
+                 node* ptr=new node;
+                 ptr=tail->next;
+                 int count=0;
+                 do{ ptr=ptr->next;
+                     count++;
+                 }while(ptr!=tail->next);
+                 return count;
+             }
+             }
+             void del_at_begin()
+             {
+                 if(tail==NULL)
+                 {
+                     cout<<"list is empty"<<endl;
+                 }
+                 else
+                 if(tail==tail->next)
+                 {   cout<<"deleting item from begining"<<endl;
+                     tail=NULL;
+                 }
+                 else
+                 {
+                     cout<<"deleting item from begining"<<endl;
+                     node* ptr=new node;
+                     ptr=tail->next;
+                     tail->next=ptr->next;
+                     ptr=NULL;
+                 }
+             }
+             void del_at_end()
+             {
+                 if(tail==NULL)
+                 {
+                     cout<<"list is empty"<<endl;
+                 }
+                 else
+                 if(tail==tail->next)
+                 {   cout<<"deleting item from begining"<<endl;
+                     tail=NULL;
+                 }
+                 else
+                 { node* ptr=new node;
+                    ptr = tail;
+			do
+			{
+				ptr = ptr->next;
+			} while (ptr->next != tail);
+			ptr->next = tail->next;
+			delete tail;
+			tail = ptr;
+                 }
+             }
+             void del_in_pos()
+             {   cout<<"enter the position where you want to delete the data"<<endl;
+                 cin>>n3;
+                 if(n3==1)
+                 {
+                     del_at_begin();
+                 }
+                 else
+                 if(n3==no_of_data())
+                 {
+                     del_at_end();
+                 }
+                 else
+                 {
+                     cout<<"deleting data at n th position"<<endl;
+                    int count=1;
+                    node* ptr=new node;
+                    ptr=tail->next;
+                    while(count<n3-1)
+                    {   ptr=ptr->next;
+                        count++;
+                    }
+                    ptr->next=ptr->next->next;
+                 }
+             }
+             void search()
+             {  cout<<"enter the element you want to search"<<endl;
+                cin>>n4;
+                  if(isempty())
+             {
+                 cout<<"empty list"<<endl;
+             }
+             else
+             {
+                int count=1;
+                int flag=0;
+                node* ptr=new node;
+                ptr=tail->next;
+                do
+                {
+                    if(ptr->data==n4)
+                    {
+                        cout<<"element found at "<<count<<" position"<<endl;
+                        flag=1;
+                        break;
+                    }
+                    else
+                    {
+                        flag=0;
+                    }
+                        ptr=ptr->next;
+                        count++;
+                }while(ptr!=tail->next);
+                if(flag==0)
+                {
+                    cout<<"element not found"<<endl;
+                }
+                
+             }
+             }
+             void display()
+             {
+                node* ptr=new node;
+                if(tail==NULL)
+                {
+                    cout<<"list is empty"<<endl;
+                }
+                else
+                {   cout<<"your entered linked list is"<<endl;
+                 ptr=tail->next;
+                do
+                {
+                    cout<<ptr->data<<" "<<endl;
+                    ptr=ptr->next;
+                }while(ptr!=tail->next);
+             }
+             }
+             void reverse()
+             {  
+                 node *temp1 = new node;
+                  node *ptr = new node;
+                   node *temp = new node;
+                   if(isempty())
+                   {
+                       
+                   }
+                   else
+                   if(tail==tail->next)
+                   {
+                       
+                   }
+                   else
+                   {
+		temp1 = tail->next;
+		ptr = temp1->next;
+		tail->next = NULL;
+		tail = temp1;
+		while (ptr != NULL)
+		{
+			temp = ptr;
+			ptr = ptr->next;
+			temp->next = temp1;
+			temp1 = temp;
+		}
+		tail->next = temp1;
+                   }  
+             }
+             bool isempty()
+             {  
+                 if(tail==NULL)
+                 {
+                    
+                     return true;
+                 }
+                 else
+                 {
+                    
+                     return false;
+                 }
+             }
+             
+};
 int main()
 {
-    int choice, element, position,ele;
-    circular_llist cl;
-    do{
-    	cout<<"\nMain Menu";     
-        cout<<"\n1.Add at end";
-        cout<<"\n2.Add at beginning";
-        cout<<"\n3.Add after";
-        cout<<"\n4.Delete";
-        cout<<"\n5.search";
-    	cout<<"\n6.reverse";
-    	cout<<"\n7.display";
-        cout<<"\nEnter your choice : ";
-        cin>>choice;
-
-		switch(choice)
-        {
-			case 1:
-				cout<<"\nEnter the element: ";
-				cin>>element;
-				cl.add_end(element);
-				cout<<endl;
-				break;
-			case 2:
-				cout<<"\nEnter the element: ";
-				cin>>element;
-				cl.add_begin(element);
-				cout<<endl;
-				break;
-			case 3:
-				cout<<"\nEnter the element: ";
-				cin>>element;
-				cout<<"\nInsert element after position: ";
-				cin>>position;
-				cl.add_after(element, position);
-				cout<<endl;
-				break;
-			case 4:
-				if (last == NULL)
-				{
-					cout<<"\nList is empty, nothing to delete";
-					break;
-				}
-				cout<<"\nEnter the element for deletion: ";
-				cin>>element;
-				cl.delete_element(element);
-				cout<<endl;
-				break;
-			case 5:cout<<"Enter the elemeent to be searched ";
-						cin>>ele;
-					cl.search(ele);         
-					break;
-			
-			case 6:   cl.reverse();
-						break;
-			case 7:		cl.display_list();
-				break;
-        }
-    }while(choice!=6);
-}
-
-void circular_llist::add_end(int value)
-{
-    struct node *temp;
-    temp = new(struct node);
-    temp->info = value;
-    if (last == NULL)
+   linkedlist<int> obj;
+    int choice,flag=1;
+ while(flag==1)
+ {  cout<<"press 0 for exit"<<endl;
+    cout<<"press 1 for displaying list"<<endl;
+    cout<<"press 2 for appending list at end"<<endl;
+    cout<<"press 3 for appending list at begin"<<endl;
+    cout<<"press 4 for appending list in between"<<endl;
+    cout<<"press 5 for total no. of data present in list"<<endl;
+    cout<<"press 6 for deleting data at begining"<<endl;
+    cout<<"press 7 for deleting data in the end"<<endl;
+    cout<<"press 8 for deleting data in between"<<endl;
+    cout<<"press 9 for search an element"<<endl;
+    cout<<"press 10 for reversing the linkedlist"<<endl;
+    cout<<"press 11 to check that list is empty or not"<<endl;
+    cin>>choice;
+    switch(choice)
     {
-        last = temp;
-        temp->next = last;   
+        case 0: flag=0;
+                break;
+        case 1: 
+                obj.display();
+                break;
+        case 2:
+                
+                obj.append();
+                break;
+        case 3: 
+                obj.append_in_begin();
+                break;
+        case 4: 
+                obj.append_in_pos();
+                break;
+        case 5: cout<<"Total no. of data present in linked list are "<<obj.no_of_data()<<endl;
+                break;
+        case 6: 
+                obj.del_at_begin();
+                break;
+        case 7:
+               obj.del_at_end();
+                break;
+        case 8: 
+              
+              obj.del_in_pos();
+              break;
+        case 9:
+              
+              obj.search();
+              break;
+        case 10:
+              cout<<"reversing the following linkedlist"<<endl;
+             obj.reverse();
+             obj.display();
+              break;
+        case 11:
+             if(obj.isempty())
+             {
+                 cout<<"list is empty"<<endl;
+             }
+             else
+             {
+                 cout<<"list is not empty"<<endl;
+             }
+              break;
+        default: cout<<"invalid input"<<endl;
     }
-    else
-    {
-        temp->next = last->next; 
-        last->next = temp;
-        last = temp;
-    }
-}
-
-void circular_llist:: reverse()
-{
-    struct node *p, *q, *r;
- 
-    p = q = r = last->next;
-    p = p->next->next;
-    q = q->next;
-    r->next = NULL;
-    q->next = r;
- 
-    while (p != last)
-    {
-        r = q;
-        q = p;
-        p = p->next;
-        q->next = r;
-    }
-    last = q;
-}
- 
-void circular_llist:: search(int ele)
-{
-	int flag=0;
-	int count=0;
-	struct node *t;
-	t=last->next;
-	while(t->next!=last)
-	{
-		++count;
-		if(t->info==ele)
-		{	
-			flag=1;
-			cout<<"Element found at position "<<count;
-			break;
-		}
-		t=t->next;
-	}
-	if(flag==0)
-	cout<<"Element not found ";
-}
- 
-void circular_llist::add_begin(int value)
-{
-    if (last == NULL)
-    {
-        cout<<"First Create the list."<<endl;
-        return;
-    }
-    struct node *temp;
-    temp = new(struct node);
-    temp->info = value;
-    temp->next = last->next;
-    last->next = temp;
-}
- 
-void circular_llist::add_after(int value, int pos)
-{
-    if (last == NULL)
-    {
-        cout<<"First Create the list."<<endl;
-        return;
-    }
-    struct node *temp, *s;
-    s = last->next;
-
-	for (int i = 0;i < pos-1;i++)
-    {
-        s = s->next;
-        if (s == last->next)
-        {
-            cout<<"There are less than ";
-            cout<<pos<<" in the list"<<endl;
-            return;
-        }
-    }
-
-	temp = new(struct node);
-    temp->next = s->next;
-    temp->info = value;
-    s->next = temp;
-
-	if (s == last)
-    { 
-        last=temp;
-    }
-}
- 
-void circular_llist::delete_element(int value)
-{
-    struct node *temp, *s;
-    s = last->next;
-    if (last->next == last && last->info == value)  
-    {
-        temp = last;
-        last = NULL;
-        free(temp);
-        return;
-    }
-    if (s->info == value)  
-    {
-        temp = s;
-        last->next = s->next;
-        free(temp);
-        return;
-    }
-
-	while (s->next != last)
-    {
-        if (s->next->info == value)    
-        {
-            temp = s->next;
-            s->next = temp->next;
-            free(temp);
-            cout<<"Element "<<value;
-            cout<<" deleted from the list"<<endl;
-            return;
-        }
-        s = s->next;
-    }
-
-	if (s->next->info == value)    
-    {
-        temp = s->next;
-        s->next = last->next;
-        free(temp);		
-        last = s;
-        return;
-    }
-    cout<<"Element "<<value<<" not found in the list"<<endl;
-}
- 
-void circular_llist::display_list()
-{
-    struct node *s;
-    if (last == NULL)
-    {
-        cout<<"List is empty, nothing to display"<<endl;
-        return;
-    }
-    s = last->next;
-    cout<<"Circular Link List: "<<endl;
-
-	while (s != last)
-    {
-        cout<<s->info<<"->";
-        s = s->next;
-    }
-    cout<<s->info<<endl;
+ }
+    return 0;
 }
